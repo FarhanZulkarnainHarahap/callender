@@ -30,7 +30,6 @@ export default function SeasonCalendar() {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
   const [time, setTime] = useState(() => formatTime(new Date()));
-  const [apiStatus, setApiStatus] = useState("api");
 
   useEffect(() => {
     const timer = window.setInterval(() => setTime(formatTime(new Date())), 1000);
@@ -51,12 +50,10 @@ export default function SeasonCalendar() {
         const payload = await response.json();
         if (!ignore) {
           setCalendar(payload);
-          setApiStatus("api");
         }
       } catch {
         if (!ignore) {
           setCalendar(buildCalendar({ year: cursor.year, month: cursor.month, selectedDate: selectedIso }));
-          setApiStatus("local");
         }
       }
     }
@@ -114,7 +111,6 @@ export default function SeasonCalendar() {
       const payload = await response.json();
       setCalendar((current) => updateCalendarDescription(current, payload.date, payload.description));
       setEditing(false);
-      setApiStatus("api");
     } catch (error) {
       setSaveError(error instanceof Error ? error.message : "Gagal menyimpan deskripsi");
     } finally {
@@ -130,7 +126,7 @@ export default function SeasonCalendar() {
       <div className="scene-bg" aria-hidden="true" />
       <div className="scene-vignette" aria-hidden="true" />
       <div className="particle-field" aria-hidden="true">
-        {Array.from({ length: 22 }).map((_, index) => (
+        {Array.from({ length: 36 }).map((_, index) => (
           <i key={index} style={{ "--i": index }} />
         ))}
       </div>
@@ -155,6 +151,12 @@ export default function SeasonCalendar() {
               <CloudSun size={17} />
               <span>{selectedDay.season.name}</span>
             </div>
+            {selectedDay.holiday ? (
+              <div className="holiday-chip">
+                <span>{selectedDay.holiday.type}</span>
+                <strong>{selectedDay.holiday.name}</strong>
+              </div>
+            ) : null}
           </div>
         </aside>
 
@@ -191,6 +193,7 @@ export default function SeasonCalendar() {
                   day.inCurrentMonth ? "" : "muted",
                   day.isSelected ? "selected" : "",
                   day.isToday ? "today" : "",
+                  day.holiday ? "holiday" : "",
                   day.description?.content ? "has-note" : ""
                 ].join(" ")}
                 onClick={() => chooseDay(day)}
@@ -200,12 +203,6 @@ export default function SeasonCalendar() {
               </button>
             ))}
           </div>
-
-          <footer className="status-line">
-            <span>{selectedDay.weather.name}</span>
-            <span>{selectedDay.artwork.variant}</span>
-            <span>{apiStatus === "api" ? "Express API" : "Mode lokal"}</span>
-          </footer>
         </section>
       </section>
 
@@ -232,6 +229,12 @@ export default function SeasonCalendar() {
         <button className="add-button" type="button" onClick={() => setEditing(true)} aria-label="Tambah deskripsi">
           <Plus size={32} strokeWidth={3} />
         </button>
+        {selectedDay.holiday ? (
+          <div className="holiday-card">
+            <span>{selectedDay.holiday.type}</span>
+            <strong>{selectedDay.holiday.name}</strong>
+          </div>
+        ) : null}
         <p className="note-kicker">Tambah deskripsi</p>
         <p className="note-sub">untuk hari ini</p>
 

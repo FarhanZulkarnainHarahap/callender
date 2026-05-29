@@ -102,51 +102,72 @@ button {
 
 .particle-field i {
   position: absolute;
-  left: calc((var(--i) * 47px) % 100vw);
-  top: calc((var(--i) * 83px) % 100vh);
-  width: 8px;
-  height: 8px;
+  left: calc((var(--i) * 83px) % 100vw);
+  top: -12vh;
+  width: 10px;
+  height: 10px;
   background: var(--accent);
-  opacity: 0.66;
+  opacity: 0.72;
   transform: rotate(calc(var(--i) * 18deg));
-  animation: drift calc(9s + var(--i) * 0.3s) linear infinite;
+  animation: drift calc(9s + var(--i) * 0.22s) linear infinite;
+  animation-delay: calc(var(--i) * -0.55s);
 }
 
-.particle-petal .particle-field i {
-  border-radius: 8px 0 8px 0;
+.season-spring .particle-field i {
+  width: 11px;
+  height: 11px;
+  border-radius: 10px 0 10px 0;
   background: #ff8bae;
+  box-shadow: 6px 2px 0 -2px #ffd0dc;
 }
 
-.particle-leaf .particle-field i {
-  border-radius: 9px 0 9px 0;
+.season-autumn .particle-field i {
+  width: 13px;
+  height: 9px;
+  border-radius: 12px 0 12px 0;
   background: #e67838;
+  box-shadow: 5px 2px 0 -2px #ffc35d;
 }
 
-.particle-drop .particle-field i {
-  width: 3px;
-  height: 18px;
-  border-radius: 0;
-  background: rgba(255, 255, 255, 0.76);
-}
-
-.particle-star .particle-field i {
-  background: #fff7c5;
-  clip-path: polygon(50% 0, 61% 36%, 98% 36%, 67% 57%, 79% 91%, 50% 70%, 21% 91%, 33% 57%, 2% 36%, 39% 36%);
-}
-
-.particle-spark .particle-field i,
-.particle-dot .particle-field i {
+.season-winter .particle-field i {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.18),
+    14px 18px 0 -2px rgba(255, 255, 255, 0.75);
+}
+
+.season-summer .particle-field i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ffe36f;
+  box-shadow:
+    0 0 12px rgba(255, 227, 111, 0.72),
+    10px 12px 0 -4px #ff9f43;
+}
+
+.particle-field i:nth-child(3n) {
+  animation-duration: 12s;
+  opacity: 0.52;
+}
+
+.particle-field i:nth-child(4n) {
+  animation-duration: 7.6s;
+  scale: 0.72;
 }
 
 @keyframes drift {
   from {
-    translate: -4vw -14vh;
+    translate: 0 -8vh;
+    rotate: 0deg;
   }
 
   to {
-    translate: 8vw 112vh;
+    translate: calc((var(--i) % 2) * 7vw - 3vw) 122vh;
+    rotate: 360deg;
   }
 }
 
@@ -223,6 +244,35 @@ button {
   background: rgba(255, 255, 255, 0.34);
   color: var(--soft-ink);
   font-size: 0.5rem;
+}
+
+.holiday-chip,
+.holiday-card {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.82);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.42);
+  line-height: 1.45;
+}
+
+.holiday-chip span,
+.holiday-card span {
+  color: var(--accent);
+  font-size: 0.48rem;
+}
+
+.holiday-chip strong,
+.holiday-card strong {
+  color: var(--ink);
+  font-size: 0.54rem;
+}
+
+.holiday-card {
+  margin: 0 0 18px;
+  text-align: left;
 }
 
 .note-panel {
@@ -504,6 +554,22 @@ button {
   color: rgba(21, 25, 30, 0.36);
 }
 
+.day-cell.holiday {
+  color: var(--accent);
+}
+
+.day-cell.holiday::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: translateX(-50%) rotate(45deg);
+}
+
 .day-cell.today::after,
 .day-cell.has-note::before {
   content: "";
@@ -539,22 +605,6 @@ button {
 
 .day-cell.selected::after {
   background: rgba(255, 255, 255, 0.8);
-}
-
-.status-line {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 14px;
-  color: rgba(21, 25, 30, 0.52);
-  font-size: 0.48rem;
-  line-height: 1.8;
-}
-
-.status-line span {
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.36);
 }
 
 .pixel-weather,
