@@ -98,19 +98,24 @@ button {
   inset: 0;
   z-index: -2;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .particle-field i {
   position: absolute;
-  left: calc((var(--i) * 83px) % 100vw);
-  top: -12vh;
+  left: calc((var(--i) * 73px) % 100vw);
+  top: -16vh;
   width: 10px;
   height: 10px;
   background: var(--accent);
   opacity: 0.72;
-  transform: rotate(calc(var(--i) * 18deg));
-  animation: drift calc(9s + var(--i) * 0.22s) linear infinite;
-  animation-delay: calc(var(--i) * -0.55s);
+  transform: translate3d(0, -16vh, 0) rotate(calc(var(--i) * 18deg));
+  animation-name: season-fall;
+  animation-duration: calc(8s + var(--i) * 0.24s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: calc(var(--i) * -0.62s);
+  will-change: transform, opacity;
 }
 
 .season-spring .particle-field i {
@@ -119,6 +124,7 @@ button {
   border-radius: 10px 0 10px 0;
   background: #ff8bae;
   box-shadow: 6px 2px 0 -2px #ffd0dc;
+  animation-name: flower-fall;
 }
 
 .season-autumn .particle-field i {
@@ -127,6 +133,7 @@ button {
   border-radius: 12px 0 12px 0;
   background: #e67838;
   box-shadow: 5px 2px 0 -2px #ffc35d;
+  animation-name: leaf-fall;
 }
 
 .season-winter .particle-field i {
@@ -137,6 +144,7 @@ button {
   box-shadow:
     0 0 0 2px rgba(255, 255, 255, 0.18),
     14px 18px 0 -2px rgba(255, 255, 255, 0.75);
+  animation-name: snow-fall;
 }
 
 .season-summer .particle-field i {
@@ -147,6 +155,7 @@ button {
   box-shadow:
     0 0 12px rgba(255, 227, 111, 0.72),
     10px 12px 0 -4px #ff9f43;
+  animation-name: ember-fall;
 }
 
 .particle-field i:nth-child(3n) {
@@ -159,15 +168,103 @@ button {
   scale: 0.72;
 }
 
-@keyframes drift {
-  from {
-    translate: 0 -8vh;
-    rotate: 0deg;
+@keyframes season-fall {
+  0% {
+    transform: translate3d(0, -16vh, 0) rotate(0deg);
+    opacity: 0;
   }
 
-  to {
-    translate: calc((var(--i) % 2) * 7vw - 3vw) 122vh;
-    rotate: 360deg;
+  10% {
+    opacity: 0.72;
+  }
+
+  100% {
+    transform: translate3d(calc((var(--i) % 2) * 7vw - 3vw), 124vh, 0) rotate(360deg);
+    opacity: 0.1;
+  }
+}
+
+@keyframes flower-fall {
+  0% {
+    transform: translate3d(0, -14vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  16% {
+    opacity: 0.74;
+  }
+
+  48% {
+    transform: translate3d(calc(5vw - (var(--i) % 4) * 2vw), 48vh, 0) rotate(150deg);
+  }
+
+  100% {
+    transform: translate3d(calc(-3vw + (var(--i) % 5) * 1.8vw), 122vh, 0) rotate(320deg);
+    opacity: 0;
+  }
+}
+
+@keyframes leaf-fall {
+  0% {
+    transform: translate3d(0, -16vh, 0) rotate(-20deg);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 0.8;
+  }
+
+  36% {
+    transform: translate3d(calc(-6vw + (var(--i) % 3) * 4vw), 35vh, 0) rotate(160deg);
+  }
+
+  72% {
+    transform: translate3d(calc(5vw - (var(--i) % 4) * 2vw), 78vh, 0) rotate(310deg);
+  }
+
+  100% {
+    transform: translate3d(calc(-2vw + (var(--i) % 5) * 2vw), 124vh, 0) rotate(500deg);
+    opacity: 0;
+  }
+}
+
+@keyframes snow-fall {
+  0% {
+    transform: translate3d(0, -12vh, 0);
+    opacity: 0;
+  }
+
+  14% {
+    opacity: 0.86;
+  }
+
+  50% {
+    transform: translate3d(calc(2vw - (var(--i) % 3) * 1vw), 48vh, 0);
+  }
+
+  100% {
+    transform: translate3d(calc(-1vw + (var(--i) % 4) * 0.8vw), 122vh, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes ember-fall {
+  0% {
+    transform: translate3d(0, -15vh, 0) scale(0.7);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.82;
+  }
+
+  60% {
+    transform: translate3d(calc(-2vw + (var(--i) % 5) * 1vw), 58vh, 0) scale(1.12);
+  }
+
+  100% {
+    transform: translate3d(calc(2vw - (var(--i) % 3) * 1.4vw), 123vh, 0) scale(0.68);
+    opacity: 0;
   }
 }
 
@@ -677,20 +774,66 @@ button {
 
 @media (max-width: 980px) {
   .season-page {
-    padding: 18px;
+    padding: 14px;
   }
 
   .calendar-shell {
     grid-template-columns: 1fr;
+    gap: 12px;
+    width: min(760px, 100%);
     align-items: stretch;
   }
 
   .side-stack {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+  }
+
+  .clock-panel {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px 18px;
+    align-items: center;
+    padding: 16px 18px;
+  }
+
+  .time {
+    grid-row: span 2;
+    margin: 0;
+    font-size: clamp(1.45rem, 4.4vw, 2rem);
+  }
+
+  .weekday,
+  .date-line,
+  .mini-row,
+  .weather-row,
+  .season-chip,
+  .holiday-chip {
+    margin: 0;
+  }
+
+  .mini-row {
+    justify-self: end;
+  }
+
+  .season-chip,
+  .holiday-chip {
+    display: none;
+  }
+
+  .calendar-panel {
+    padding: 18px;
+  }
+
+  .day-grid {
+    grid-template-rows: repeat(6, clamp(39px, 6vh, 50px));
   }
 }
 
 @media (max-width: 680px) {
+  .season-page {
+    padding: 10px;
+  }
+
   .side-stack {
     grid-template-columns: 1fr;
   }
@@ -701,10 +844,50 @@ button {
     padding: 20px;
   }
 
+  .clock-panel {
+    grid-template-columns: 1fr auto;
+    padding: 14px;
+  }
+
+  .time {
+    grid-row: auto;
+    font-size: clamp(1.25rem, 8vw, 1.65rem);
+  }
+
+  .weekday,
+  .date-line {
+    font-size: 0.52rem;
+  }
+
+  .weather-row,
+  .mini-row {
+    display: none;
+  }
+
+  .calendar-panel {
+    padding: 14px;
+  }
+
   .calendar-header {
-    grid-template-columns: 42px 1fr 42px;
+    grid-template-columns: 36px 1fr 36px;
     gap: 10px;
     align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .calendar-header button,
+  .editor-actions button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .calendar-header h1 {
+    font-size: clamp(1.25rem, 9vw, 1.75rem);
+  }
+
+  .calendar-header p {
+    margin-top: 7px;
+    font-size: 0.45rem;
   }
 
   .year-block {
@@ -715,31 +898,36 @@ button {
     position: absolute;
     right: 22px;
     top: 24px;
-    font-size: 0.82rem;
+    font-size: 0.68rem;
   }
 
   .weekday-grid,
   .day-grid {
-    grid-template-columns: repeat(7, minmax(35px, 1fr));
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+  .weekday-grid {
+    margin-bottom: 6px;
+  }
+
+  .weekday-grid span {
+    min-height: 22px;
+    font-size: 0.47rem;
   }
 
   .day-grid {
-    gap: 5px;
+    grid-template-rows: repeat(6, clamp(34px, 7.2vh, 43px));
+    gap: 4px;
   }
 
   .day-cell {
-    aspect-ratio: 1;
-    font-size: 0.7rem;
+    font-size: clamp(0.54rem, 4vw, 0.68rem);
   }
 
   .day-cell.today::after,
   .day-cell.has-note::before {
     width: 5px;
     height: 5px;
-  }
-
-  .status-line {
-    font-size: 0.48rem;
   }
 
   .detail-sidebar {
@@ -754,5 +942,37 @@ button {
 
   .detail-sidebar.open {
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 420px), (max-height: 720px) {
+  .calendar-shell {
+    gap: 8px;
+  }
+
+  .clock-panel {
+    padding: 12px;
+  }
+
+  .calendar-panel {
+    padding: 12px;
+  }
+
+  .day-grid {
+    grid-template-rows: repeat(6, clamp(28px, 6.5vh, 36px));
+  }
+
+  .day-cell.today::after,
+  .day-cell.has-note::before,
+  .day-cell.holiday::after {
+    bottom: 3px;
+    width: 4px;
+    height: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .particle-field i {
+    animation-duration: 18s;
   }
 }
